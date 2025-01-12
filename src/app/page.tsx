@@ -6,6 +6,7 @@ import { ChevronRight, MoveRight, Triangle } from "lucide-react"
 import CalcProfitImg from "../../public/calc-profit.avif"
 import CalcTaxImg from "../../public/calc-tax-liability.avif"
 import { getSimplePriceData, getTrendingData } from "@/actions/api"
+import Carousel from "@/components/carousel"
 
 type Team = {
 	name: string
@@ -415,10 +416,17 @@ export default async function Home() {
 				</div>
 			</div>
 			{/* footer */}
-			<div className="bg-white p-8">
-				<h2 className="text-2xl font-semibold">You May Also Like</h2>
-
-				<h2 className="mt-4 text-2xl font-semibold">Trending Coins</h2>
+			<div className="mt-8 bg-white py-12 px-6">
+				<div className="~max-w-[1680px] ~mx-auto">
+					<h2 className="text-2xl font-semibold">
+						You May Also Like
+					</h2>
+					<Carousel data={trendingData} />
+					<h2 className="mt-8 text-2xl font-semibold">
+						Trending Coins
+					</h2>
+					<Carousel data={trendingData} />
+				</div>
 			</div>
 		</main>
 	)
