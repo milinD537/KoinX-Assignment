@@ -54,7 +54,6 @@ export default async function Home() {
 				<div className="">
 					<section className="lg:bg-white p-0 lg:px-6 lg:p-6 rounded-lg">
 						<div className="flex items-center gap-3">
-							{/* bitcoin icon */}
 							<div className="size-9 rounded-full bg-stone-300">
 								<img src="/btc-logo.png" alt="" />
 							</div>
@@ -118,30 +117,36 @@ export default async function Home() {
 					</section>
 					<Tabs />
 					<section className="mt-8">
-						<div className="mt-4 bg-white p-6 rounded-lg">
-							<h2 className="text-2xl font-semibold">
+						<div className="bg-white p-6 rounded-lg">
+							<h2 className="mt-4 text-2xl font-semibold">
 								Performance
 							</h2>
-							<div className="mt-6 text-[#44475B] grid grid-cols-[auto_1fr_auto] gap-4 place-items-center">
-								<div>
-									<p className="text-sm">Today&apos;s Low</p>
-									<p className="font-medium">46,930.22</p>
+							<div className="grid grid-cols-[auto_1fr_auto] gap-4">
+								<div className="mt-6 text-[#44475B] grid grid-cols-subgrid col-span-full place-items-center">
+									<div>
+										<p className="text-sm">
+											Today&apos;s Low
+										</p>
+										<p className="font-medium">46,930.22</p>
+									</div>
+									<div className="w-full h-1 rounded-full bg-[linear-gradient(to_right,#FF4949,#FF4E11,#FC870A,#FFAF11,#C2CB21,#11EB68)]"></div>
+									<div className="text-end">
+										<p className="text-sm">
+											Today&apos;s High
+										</p>
+										<p className="font-medium">49,343.83</p>
+									</div>
 								</div>
-								<div className="w-full h-1 rounded-full bg-[linear-gradient(to_right,#FF4949,#FF4E11,#FC870A,#FFAF11,#C2CB21,#11EB68)]"></div>
-								<div className="text-end">
-									<p className="text-sm">Today&apos;s High</p>
-									<p className="font-medium">49,343.83</p>
-								</div>
-							</div>
-							<div className="mt-6 text-[#44475B] grid grid-cols-[auto_1fr_auto] gap-4 place-items-center">
-								<div>
-									<p className="text-sm">52W Low</p>
-									<p className="font-medium">16,930.22</p>
-								</div>
-								<div className="w-full h-1 rounded-full bg-[linear-gradient(to_right,#FF4949,#FF4E11,#FC870A,#FFAF11,#C2CB21,#11EB68)]"></div>
-								<div className="text-end">
-									<p className="text-sm">52W High</p>
-									<p className="font-medium">49,743.83</p>
+								<div className="mt-6 text-[#44475B] grid grid-cols-subgrid col-span-full place-items-center">
+									<div>
+										<p className="text-sm">52W Low</p>
+										<p className="font-medium">16,930.22</p>
+									</div>
+									<div className="w-full h-1 rounded-full bg-[linear-gradient(to_right,#FF4949,#FF4E11,#FC870A,#FFAF11,#C2CB21,#11EB68)]"></div>
+									<div className="text-end">
+										<p className="text-sm">52W High</p>
+										<p className="font-medium">49,743.83</p>
+									</div>
 								</div>
 							</div>
 							<Info info="Fundamentals" />
