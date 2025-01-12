@@ -415,7 +415,11 @@ export default async function Home() {
 				</div>
 			</div>
 			{/* footer */}
-			<div className="bg-white p-8"></div>
+			<div className="bg-white p-8">
+				<h2 className="text-2xl font-semibold">You May Also Like</h2>
+
+				<h2 className="mt-4 text-2xl font-semibold">Trending Coins</h2>
+			</div>
 		</main>
 	)
 }

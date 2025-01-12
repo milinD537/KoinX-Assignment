@@ -6,10 +6,15 @@ const API_KEY = process.env.NEXT_PUBLIC_API_KEY
 
 export async function getSimplePriceData() {
 	const url = `https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=inr%2Cusd&include_24hr_change=true&x_cg_demo_api_key=${API_KEY}`
-	const options = { method: "GET", headers: { accept: "application/json" } }
 
 	try {
-		const response = await fetch(url, options)
+		const response = await fetch(url, {
+			method: "GET",
+			headers: { accept: "application/json" },
+			next: {
+				revalidate: 0,
+			},
+		})
 		const data: SimplePriceResponse | undefined = await response.json()
 		return data
 	} catch (error) {
@@ -19,10 +24,15 @@ export async function getSimplePriceData() {
 
 export async function getTrendingData() {
 	const url = `https://api.coingecko.com/api/v3/search/trending?x_cg_demo_api_key=${API_KEY}`
-	const options = { method: "GET", headers: { accept: "application/json" } }
 
 	try {
-		const response = await fetch(url, options)
+		const response = await fetch(url, {
+			method: "GET",
+			headers: { accept: "application/json" },
+			next: {
+				revalidate: 0,
+			},
+		})
 		const data = (await response.json()) as {
 			coins: { item: TrendingNewData }[]
 		}
