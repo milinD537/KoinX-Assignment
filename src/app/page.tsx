@@ -5,7 +5,7 @@ import TradingviewWidget from "@/components/tradingview-widget"
 import { ChevronRight, MoveRight, Triangle } from "lucide-react"
 import CalcProfitImg from "../../public/calc-profit.avif"
 import CalcTaxImg from "../../public/calc-tax-liability.avif"
-import { getSimplePriceData } from "@/actions/price"
+import { getSimplePriceData, getTrendingData } from "@/actions/api"
 
 type Team = {
 	name: string
@@ -19,8 +19,9 @@ const defaultTeamDetails = {
 }
 
 export default async function Home() {
-	const data = await getSimplePriceData()
-	if (!data) return <div>Loading...</div>
+	const simplePricedata = await getSimplePriceData()
+	const trendingData = await getTrendingData()
+	if (!(simplePricedata && trendingData)) return <div>Loading...</div>
 
 	const team: Team[] = [
 		{
@@ -41,7 +42,7 @@ export default async function Home() {
 	]
 	return (
 		<main>
-			<div className="mainWrapper | px-3 pb-3 max-w-screen-2xl mx-auto lg:grid grid-cols-[1fr_auto] gap-5 gap-y-0">
+			<div className="mainWrapper | px-3 pb-3 max-w-screen-2xl mx-auto xl:grid grid-cols-[1fr_auto] gap-5 gap-y-0">
 				<p className="col-span-full text-sm text-[#3E5765] flex items-center py-4">
 					Cryptocurrencies{" "}
 					<span className="w-fit grid grid-cols-[auto_10px_auto]">
@@ -54,7 +55,9 @@ export default async function Home() {
 					<section className="lg:bg-white p-0 lg:px-6 lg:p-6 rounded-lg">
 						<div className="flex items-center gap-3">
 							{/* bitcoin icon */}
-							<div className="size-9 rounded-full bg-stone-300"></div>
+							<div className="size-9 rounded-full bg-stone-300">
+								<img src="/btc-logo.png" alt="" />
+							</div>
 							<h2 className="text-xl lg:text-2xl font-semibold">
 								Bitcoin
 							</h2>
@@ -70,26 +73,29 @@ export default async function Home() {
 								<div className="flex items-center gap-3">
 									<p className="text-[1.75rem] font-semibold">
 										$
-										{data.bitcoin.usd.toLocaleString(
+										{simplePricedata.bitcoin.usd.toLocaleString(
 											"en-US"
 										)}
 									</p>
 									<span
 										className={`font-medium flex items-center gap-1 p-2 rounded ${
-											data.bitcoin.usd_24h_change >= 0
+											simplePricedata.bitcoin
+												.usd_24h_change >= 0
 												? "bg-[#14B079]/10 text-[#14B079]"
 												: "bg-[#f7324c]/10 text-[#f7324c]"
 										}`}
 									>
 										<Triangle
 											className={`size-4 ${
-												data.bitcoin.usd_24h_change >= 0
+												simplePricedata.bitcoin
+													.usd_24h_change >= 0
 													? "fill-[#14B079]"
 													: "fill-[#f7324c] rotate-180"
 											} stroke-none`}
 										/>
 										{Math.round(
-											data.bitcoin.usd_24h_change * 100
+											simplePricedata.bitcoin
+												.usd_24h_change * 100
 										) / 100}
 										%
 									</span>
@@ -98,7 +104,10 @@ export default async function Home() {
 									</span>
 								</div>
 								<p className="font-medium">
-									₹ {data.bitcoin.inr.toLocaleString("en-IN")}
+									₹{" "}
+									{simplePricedata.bitcoin.inr.toLocaleString(
+										"en-IN"
+									)}
 								</p>
 							</div>
 							<hr className="my-6 border-[#DEE1E6] border-t-2" />
@@ -333,7 +342,7 @@ export default async function Home() {
 					</section>
 				</div>
 				<div className="relative">
-					<div className="sticky top-20 space-y-5">
+					<div className="2xl:sticky top-20 space-y-5">
 						<div className="text-white text-center | bg-[#0052FE] p-8 rounded-2xl space-y-5 shadow-[0_0_16px_hsl(203,54%,21%,10%)]">
 							<h4 className="text-xl lg:text-2xl font-bold">
 								Get Started with KoinX <br /> for FREE
@@ -355,27 +364,43 @@ export default async function Home() {
 							</h4>
 							{/* API, Top 3 Coins */}
 							<div className="mt-6 space-y-5">
-								{Array.from({ length: 3 }).map((_, i) => (
+								{trendingData.slice(0, 3).map((data) => (
 									<div
-										key={i}
+										key={data.id}
 										className="flex items-center justify-between gap-2"
 									>
 										<div className="flex items-center gap-2">
-											{/* logo */}
-											<div className="size-6 rounded-full bg-stone-200"></div>
-											{/* name */}
-											<p className="font-medium">
-												Ethereum(ETH)
+											<div className="size-6 rounded-full overflow-clip bg-stone-200">
+												<img
+													src={data.thumb}
+													alt="Symbol"
+													className="size-full object-cover"
+												/>
+											</div>
+											<p className="text-base font-medium">
+												{data.name} ({data.symbol})
 											</p>
 										</div>
-										{/* price change */}
 										<span
-											className={`font-medium flex items-center gap-1 p-2 rounded bg-[#14B079]/10 text-[#14B079]`}
+											className={`text-base font-medium flex items-center gap-1 p-2 rounded bg-[#14B079]/10 text-[#14B079] ${
+												data.data.price_change_usd >= 0
+													? "bg-[#14B079]/10 text-[#14B079]"
+													: "bg-[#f7324c]/10 text-[#f7324c]"
+											}`}
 										>
 											<Triangle
-												className={`size-4 fill-[#14B079] stroke-none`}
+												className={`size-4 ${
+													data.data
+														.price_change_usd >= 0
+														? "fill-[#14B079]"
+														: "fill-[#f7324c] rotate-180"
+												} stroke-none`}
 											/>
-											8.21%
+											{Math.round(
+												simplePricedata.bitcoin
+													.usd_24h_change * 1000
+											) / 1000}
+											%
 										</span>
 									</div>
 								))}

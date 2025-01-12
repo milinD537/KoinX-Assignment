@@ -30,7 +30,6 @@ function TradingViewWidget() {
           "support_host": "https://www.tradingview.com"
         }`
 		container.current.appendChild(script)
-		console.log("TradingViewWidget mounted")
 
 		return () => {
 			if (container.current) {
